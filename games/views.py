@@ -114,7 +114,7 @@ def getGuesses(request, challenge_id, user_id):
         serializer = WordleAttemptSerializer(attempt, many=False)
         return Response(serializer.data)
     except WordleAttempt.DoesNotExist:
-        return Response({'error': 'Attempt not found.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Attempt not found.'}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getAllAttempts(request, challenge_id, user_id):
