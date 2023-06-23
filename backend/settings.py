@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
-    "https://wordle-with-friends.up.railway.app/"
+    "https://wordle-with-friends.up.railway.app"
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://wordle-with-friends-backend-production.up.railway.app']
