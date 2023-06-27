@@ -32,10 +32,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ALLOWED_ORIGINS = [
-    "https://wordle-with-friends.up.railway.app",
-    os.getenv("LOCAL_HOST")
-]
+if environment == "production":
+    CORS_ALLOWED_ORIGINS = [
+        "https://wordle-with-friends.up.railway.app"
+    ]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv("LOCAL_HOST")
+    ]
 
 CSRF_TRUSTED_ORIGINS = ['https://wordle-with-friends-backend-production.up.railway.app']
 
