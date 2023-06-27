@@ -104,7 +104,7 @@ if environment == "production":
     CHANNEL_LAYERS["default"] = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(os.getenv("REDIS_URL"))],
+            "hosts": [(os.environ["REDIS_URL"])],
         },
     }, 
 
@@ -123,11 +123,11 @@ if environment == "production":
     # Use SQLite for development environment
     DATABASES["default"] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("PGDATABASE"),
-        'USER': os.getenv("PGUSER"),
-        'PASSWORD': os.getenv("PGPASSWORD"),
-        'HOST': os.getenv("PGHOST"),
-        'PORT': os.getenv("PGPORT"),
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
     }
 
 
