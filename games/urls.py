@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.getRoutes, name='routes'),
     path('challenges/create/<str:user_id>', views.createChallenge, name='create-challenge'),
     path('challenges/<str:challenge_id>', views.getChallengeByID, name='get-challenge'),
+    path('challenges/recent/<int:num_challenges>', views.getRecentChallenges, name='get-recent-challenges'),
     path('challenges/getUsers/<str:challenge_id>/<str:user_id>', views.getAllUsersForChallenge, name='get-relevent-users'),
     path('attempts/create', views.makeGuess, name='make-guess'),
     path('attempts/<str:challenge_id>/<str:user_id>', views.getGuesses, name='get-guesses'),

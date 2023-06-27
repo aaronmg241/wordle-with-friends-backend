@@ -167,3 +167,27 @@ def updateUser(request, user_id):
     user.nickname = nickname
     user.save()
     return Response({'message': 'User updated successfully'})
+
+@api_view(['GET'])
+def getRecentChallenges(request, num_challenges):
+    num_challenges = int(num_challenges)
+    if num_challenges < 0 or num_challenges >= 25:
+        return Response({'error': 'Number of challenges should be a positive number less than 25.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    
+    challenges = WordleChallenge.objects.order_by('-created_at')[num_challenges:num_challenges+5]
+    serializer = WordleChallengeSerializer(challenges, many=True)
+    
+    challenge_data = serializer.data
+    
+    for data in challenge_data:
+        challenge_id = data['challenge_id']
+        num_attempts = WordleAttempt.objects.filter(challenge_id=challenge_id).count()
+        data['num_attempts'] = num_attempts
+
+        creator_id = data['creator']
+        creator = User.objects.get(user_id=creator_id)
+        data['creator'] = creator.nickname
+    
+    return Response(challenge_data)
