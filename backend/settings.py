@@ -101,6 +101,7 @@ CHANNEL_LAYERS = {
 }
 
 if environment == "production":
+    print('CHANNELS PRODUCTION')
     CHANNEL_LAYERS["default"] = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
@@ -119,7 +120,7 @@ DATABASES = {
 }
 
 if environment == "production":
-    print('PRODUCTION')
+    print('DATABASE PRODUCTION')
     # Use SQLite for development environment
     DATABASES["default"] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
