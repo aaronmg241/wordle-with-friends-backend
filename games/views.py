@@ -193,6 +193,9 @@ def getRecentChallenges(request, num_challenges):
         if not user_attempt:
             data['completed_status'] = 'noattempt'
         else:
+            # Don't count your own attempt
+            data['num_attempts'] -= 1
+
             # if user_attempt guesses contains the correct word then data['completed_status'] = 'won'
             # else if user_attempt guesses is less than length 6 then data['completed_status'] = 'inprogress'
             # else data['completed_status'] = 'lost'
