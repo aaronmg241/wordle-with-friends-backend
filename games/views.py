@@ -174,7 +174,9 @@ def getRecentChallenges(request, num_challenges):
     if num_challenges < 0 or num_challenges >= 25:
         return Response({'error': 'Number of challenges should be a positive number less than 25.'}, status=status.HTTP_400_BAD_REQUEST)
     
-
+    user_id = request.query_params.get('user_id')
+    if user_id is None:
+        return Response({'error': 'Must pass in a user id.'}, status=status.HTTP_400_BAD_REQUEST)
     
     challenges = WordleChallenge.objects.order_by('-created_at')[num_challenges:num_challenges+5]
     serializer = WordleChallengeSerializer(challenges, many=True)
@@ -183,8 +185,29 @@ def getRecentChallenges(request, num_challenges):
     
     for data in challenge_data:
         challenge_id = data['challenge_id']
-        num_attempts = WordleAttempt.objects.filter(challenge_id=challenge_id).count()
-        data['num_attempts'] = num_attempts
+        attempts = WordleAttempt.objects.filter(challenge_id=challenge_id)
+        data['num_attempts'] = attempts.count()
+
+        user_attempt = attempts.filter(user_id=user_id).first()
+        
+        if not user_attempt:
+            data['completed_status'] = 'noattempt'
+        else:
+            # if user_attempt guesses contains the correct word then data['completed_status'] = 'won'
+            # else if user_attempt guesses is less than length 6 then data['completed_status'] = 'inprogress'
+            # else data['completed_status'] = 'lost'
+            # Check if user_attempt guesses is 6
+            guesses = user_attempt.guesses if user_attempt.guesses else []
+            correct_word = data['word']
+            
+            if correct_word in guesses:
+                data['completed_status'] = 'won'
+                data['num_guesses'] = len(guesses)
+            elif len(guesses) < 6:
+                data['completed_status'] = 'inprogress'
+                data['num_guesses'] = len(guesses)
+            else:
+                data['completed_status'] = 'lost'
 
         creator_id = data['creator']
         creator = User.objects.get(user_id=creator_id)
